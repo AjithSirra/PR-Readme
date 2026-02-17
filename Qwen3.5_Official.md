@@ -15,6 +15,14 @@ uv pip install -U vllm \
     --extra-index-url https://wheels.vllm.ai/nightly
 ```
 
+### Pip Install (AMD ROCm Backend: MI300X, MI325X, MI355X)
+> Note: The vLLM wheel for ROCm requires Python 3.12, ROCm 7.0, and glibc >= 2.35. If your environment does not meet these requirements, please use the Docker-based setup as described below.
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install vllm --extra-index-url https://wheels.vllm.ai/rocm
+```
+
 ### Docker
 ```bash
 docker run --gpus all \
@@ -63,6 +71,65 @@ vllm serve Qwen/Qwen3.5-397B-A17B \
 
 !!! tip
     To enable tool calling, add `--enable-auto-tool-choice --tool-call-parser qwen3_coder` to the serve command.
+
+### AMD MI GPU Deployment (MI300X/MI325X/MI355X)
+
+#### Using vLLM
+
+##### Launch Docker Container
+```bash
+docker run -it --device=/dev/kfd --device=/dev/dri \
+  --security-opt seccomp=unconfined \
+  --group-add video \
+  --ipc=host \
+  --cap-add=SYS_PTRACE \
+  -p 8000:8000 \
+  -v ~/.cache/huggingface:/root/.cache/huggingface \
+  rocm/vllm-dev:nightly_main_20260211
+```
+
+##### Inside the Container
+```bash
+# Run vLLM server
+
+pip install git+https://github.com/huggingface/transformers
+
+export VLLM_ROCM_USE_AITER=1
+
+vllm serve Qwen/Qwen3.5-397B-A17B \
+  --port 8000 \
+  --tensor-parallel-size 8 \
+  --reasoning-parser qwen3 \
+  --enable-auto-tool-choice \
+  --tool-call-parser qwen3_coder
+```
+
+#### Using SGLang
+
+SGLang provides an alternative high-performance serving backend optimized for AMD MI GPUs.
+
+##### Launch Docker Container
+```bash
+docker run -it --device=/dev/kfd --device=/dev/dri \
+  --security-opt seccomp=unconfined \
+  --group-add video \
+  --ipc=host \
+  --cap-add=SYS_PTRACE \
+  -p 8000:8000 \
+  -v ~/.cache/huggingface:/root/.cache/huggingface \
+  rocm/sgl-dev:v0.5.8.post1-rocm720-mi30x-20260215
+```
+
+##### Inside the Container
+```bash
+python3 -m sglang.launch_server \
+  --port 8000 \
+  --model-path Qwen/Qwen3.5-397B-A17B \
+  --tp-size 8 \
+  --attention-backend triton \
+  --reasoning-parser qwen3 \
+  --tool-call-parser qwen3_coder
+```
 
 ### Latency-Focused Serving
 
