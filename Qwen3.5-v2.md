@@ -90,21 +90,7 @@ docker run -it --device=/dev/kfd --device=/dev/dri \
 
 ##### Inside the Container
 ```bash
-# Install latest vLLM
-pip install git+https://github.com/vllm-project/vllm.git@main
-
 # Run vLLM server
-VLLM_ROCM_USE_AITER=1 \
-vllm serve Qwen/Qwen3.5-397B-A17B \
-  --port 8000 \
-  --tensor-parallel-size 8 \
-  --reasoning-parser qwen3 \
-  --enable-auto-tool-choice \
-  --tool-call-parser qwen3_coder
-```
-
-##### Direct Command (if vLLM is already installed)
-```bash
 export VLLM_ROCM_USE_AITER=1
 
 vllm serve Qwen/Qwen3.5-397B-A17B \
