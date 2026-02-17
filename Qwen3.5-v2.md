@@ -91,6 +91,9 @@ docker run -it --device=/dev/kfd --device=/dev/dri \
 ##### Inside the Container
 ```bash
 # Run vLLM server
+
+pip install git+https://github.com/huggingface/transformers
+
 export VLLM_ROCM_USE_AITER=1
 
 vllm serve Qwen/Qwen3.5-397B-A17B \
