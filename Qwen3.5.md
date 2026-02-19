@@ -92,7 +92,7 @@ docker run -it --device=/dev/kfd --device=/dev/dri \
 ```bash
 # Run vLLM server
 
-pip install git+https://github.com/huggingface/transformers
+pip install git+https://github.com/huggingface/transformers.git
 
 export VLLM_ROCM_USE_AITER=1
 
