@@ -106,8 +106,10 @@ vllm serve Qwen/Qwen3.5-397B-A17B \
 
 ##### Test with Query 
 ```bash
-curl http://localhost:8000/v1/completions  -H "Content-Type: application/json" -d '{
-"model":"Qwen3.5-397B-A17B",
+curl http://localhost:8000/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen3.5-397B-A17B",
     "prompt": "Explain Agentic AI.",
     "max_tokens": 128
   }'
