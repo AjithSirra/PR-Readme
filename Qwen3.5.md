@@ -104,6 +104,15 @@ vllm serve Qwen/Qwen3.5-397B-A17B \
   --tool-call-parser qwen3_coder
 ```
 
+##### Test with Query 
+```bash
+curl http://localhost:8000/v1/completions  -H "Content-Type: application/json" -d '{
+"model":"Qwen3.5-397B-A17B",
+    "prompt": "Explain Agentic AI.",
+    "max_tokens": 128
+  }'
+```
+
 #### Using SGLang
 
 SGLang provides an alternative high-performance serving backend optimized for AMD MI GPUs.
@@ -129,6 +138,15 @@ python3 -m sglang.launch_server \
   --attention-backend triton \
   --reasoning-parser qwen3 \
   --tool-call-parser qwen3_coder
+```
+
+##### Test with Query 
+```bash
+curl http://localhost:8000/v1/completions  -H "Content-Type: application/json" -d '{
+"model":"Qwen3.5-397B-A17B",
+    "prompt": "Explain Agentic AI.",
+    "max_tokens": 128
+  }'
 ```
 
 ### Latency-Focused Serving
