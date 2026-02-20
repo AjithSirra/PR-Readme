@@ -105,6 +105,9 @@ vllm serve Qwen/Qwen3.5-397B-A17B \
 ```
 
 ##### Test with Query 
+
+Once the Server is ready, test it with simple query:
+
 ```bash
 curl http://localhost:8000/v1/completions \
   -H "Content-Type: application/json" \
@@ -143,9 +146,14 @@ python3 -m sglang.launch_server \
 ```
 
 ##### Test with Query 
+
+Once the Server is ready, test it with simple query:
+
 ```bash
-curl http://localhost:8000/v1/completions  -H "Content-Type: application/json" -d '{
-"model":"Qwen3.5-397B-A17B",
+curl http://localhost:8000/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "Qwen3.5-397B-A17B",
     "prompt": "Explain Agentic AI.",
     "max_tokens": 128
   }'
